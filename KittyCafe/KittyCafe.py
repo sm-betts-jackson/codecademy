@@ -1,6 +1,17 @@
 import random as rd
 import numpy as np
 
+input('''
+                           WELCOME TO
+      |  /                       ____                  /
+      | /  * ----- ----- \   /  /    \    ^    ____  ____  |
+      |:   |   |     |    \ /   !        / \   |     |     |
+      | \  |   |     |     |    !       /---\  |==   |==   |
+      |  \ |   |     |     |    \____/ /     \ |     |___  o
+      
+                          Press ENTER...
+      ''')
+
 class Kitty:
     name_list = ["Leo", "Scampers", "Mittens", "Boots", "Charlie", "Buddy", 
                  "Moomoo", "Chichi", "Lola", "Honey", "Lilly", "Zoom", "Arnold",
@@ -32,17 +43,17 @@ class Kitty:
         elif self.kitty_size == "teeny tiny":
             current_sat_idx = 3
         self.current_sat = self.sat_levels[current_sat_idx]
-        return '''A {size} kitty has entered your cafe!
+        print('''A {size} kitty has entered your cafe!
 The kitty's name is {name}.
 It looks like {name} is {sat}
 Better get cooking!'''.format(
-                name=self.kitty_name, size=self.kitty_size, sat=self.current_sat)
+                name=self.kitty_name, size=self.kitty_size, sat=self.current_sat))
     
 
 kat = Kitty()
 kat.generate_kitty()
 
-# In[]   
+  
 class Cafe:
     ingredients = ["milk", "roast", "flour", "mice", "catnip", "treats", 
                 "tuna", "birds"]
@@ -71,6 +82,7 @@ class Cafe:
         pass
 cafe = Cafe()
 cafe.cook()
+show()
 # In[]
 class Feed:
     pass
