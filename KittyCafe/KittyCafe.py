@@ -1,18 +1,7 @@
 import random as rd
 import numpy as np
 import time
-options = ['pie','cake','potatoes']
-# In[]
-input('''
-                           WELCOME TO
-      |  /                       ____                  /
-      | /  * ----- ----- \   /  /    \    ^    ____  ____  |
-      |:   |   |     |    \ /   !        / \   |     |     |
-      | \  |   |     |     |    !       /---\  |==   |==   |
-      |  \ |   |     |     |    \____/ /     \ |     |___  o
-      
-                          Press ENTER...
-      ''') 
+
 teeny_tiny = r'''
  |\___/|
  | o o |
@@ -75,20 +64,32 @@ ENORMOUS = r'''
 (__(__)_____(__)__)/
     ""       ""
 '''
-print("Our guests come in all shapes and sizes...")
-time.sleep(3)
-print('From teeny tiny...\n'+teeny_tiny)
-time.sleep(2)
-print('to fluffy...\n'+fluffy)
-time.sleep(2)
-print('to absolutely ENORMOUS!!!\n'+ENORMOUS)
-time.sleep(3)
-input("They are all quite hungry, and can't wait to eat!\nPress ENTER...")
-directions = """
-
-"""
 kitty_images = [teeny_tiny,small,fluffy,chonky,hekkin_big,ENORMOUS]
 
+def intro(kitty_images):
+    input('''
+                           WELCOME TO
+      |  /                       ____                  /
+      | /  * ----- ----- \   /  /    \    ^    ____  ____  |
+      |:   |   |     |    \ /   !        / \   |     |     |
+      | \  |   |     |     |    !       /---\  |==   |==   |
+      |  \ |   |     |     |    \____/ /     \ |     |___  o
+      
+                          Press ENTER...
+      ''') 
+
+    print("Our guests come in all shapes and sizes...")
+    time.sleep(3)
+    print('From teeny tiny...\n'+kitty_images[0])
+    time.sleep(2)
+    print('to fluffy...\n'+kitty_images[2])
+    time.sleep(2)
+    print('to absolutely ENORMOUS!!!\n'+kitty_images[-1])
+    time.sleep(3)
+    input("They are all quite hungry, and can't wait to eat!\nPress ENTER...")
+    directions = """
+
+"""
 # In[]
 class Kitty:
     name_list = ["Leo", "Scampers", "Mittens", "Boots", "Charlie", "Buddy", 
@@ -126,32 +127,50 @@ class Kitty:
         print('A kitty has entered your cafe!')
         time.sleep(2) 
         print(kitty_images[kitty_size_idx])
-        input('''This {size} kitty's name is {name}.
-              
-It's favorite food is {fave}.
+        time.sleep(2)
+        print("This {size} kitty's name is {name}.".format(
+                size=self.kitty_size, name=self.kitty_name))
+        time.sleep(2)
+        print("It's favorite food is {fave}.".format(fave=self.kitty_favorite))
+        time.sleep(2)
+        print("It looks like {name} is \033[1m{sat}\033[0m".format(
+                name=self.kitty_name,sat=self.current_sat))
+        time.sleep(2)
+        input('Better get cooking!')
+    def feed_kitty(self,choice,food):
+        print('You served {} to {}'.format(food,self.kitty_name))
+        if choice == self.kitty_favorite:
+            current_sat_idx = -1
+            current_sat = self.sat_levels[current_sat_idx]
+            print("Excellent! {name} is {sat}/n".format(
+                    name=self.kitty_name,sat=current_sat))
+        if choice != self.kitty_favorite:
+            if self.size_list.index(self.kitty_size) < self.size_list.index("fluffy"):
+                # still hungry
+            else:
+                # needs a little snack
+            current_sat_idx = 
+def print_options(options):
+    for opt in options:
+        print(opt)
+        if opt == options[-2]:
+            print('or')
+        if opt == options[-1]:
+            choice= input('???\n')
+    return choice
 
-It looks like {name} is {sat}
-
-Better get cooking!'''.format(
-                size=self.kitty_size, name=self.kitty_name, 
-                fave=self.kitty_favorite, sat=self.current_sat))
+def print_choice(choice,options,meals):
+    for i,pick in enumerate(options):
+        if choice == pick:
+            food = meals[i]
+    return food 
     
 class Cafe:
-    ingredients = ['milk','mice','tuna','quail']
-    def print_options(self,options):
-        for opt in options:
-            print(opt)
-            if opt == options[-2]:
-                print('or')
-            if opt == options[-1]:
-                choice= input('???')
-            return choice
-    def print_choice(self,choice,options,meals):
-        for i,pick in enumerate(options):
-            if choice == pick:
-                food = meals[i]
-        return food      
+    ingredients = ['milk','mice','tuna','quail']  
     def cook(self):
+        time.sleep(2)
+        print("Time to add your first ingredient...")
+        time.sleep(2)
         print("You have these ingredients to start with:")
         time.sleep(1)
         for ingredient in self.ingredients:
@@ -180,17 +199,17 @@ class Cafe:
             meals = ['buttered quail', 'birdie breakfast', 'fried chiken', 'quail a la carte']
             choice2 = print_options(options)
             food = print_choice(choice2,options,meals)
-        return food
+        else:
+            print('You do not have that ingredient!')
+        return choice1, food
     def update_satisfaction(self):
         pass
-# In[]    
+# In[]  
+#intro(kitty_images)        
 kat = Kitty()
 kat.generate_kitty()
 cafe = Cafe()
-time.sleep(2)
-print("Time to add your first ingredient...")
-time.sleep(2)
-food = cafe.cook()
+choice, food = cafe.cook()
 print("You've made {}!".format(food))
 
 # In[]
