@@ -1,7 +1,8 @@
 import random as rd
 import numpy as np
 import time
-
+options = ['pie','cake','potatoes']
+# In[]
 input('''
                            WELCOME TO
       |  /                       ____                  /
@@ -102,13 +103,15 @@ class Kitty:
         "a bit peckish...",
         "satisfied & purring =^..^="
         ]
+    favorites = ['milk','mice','tuna','quail']
     def __init__(self): #currently needs no inputs bc names & sizes are randomly generated
     # The minimum food points needed to increase satisfaction are determined by its size. 
         pass
     def __repr__(self):
-        pass
+        return("Generates a kitty & updates satisfaction levels.")
     def generate_kitty(self):
         self.kitty_name = self.name_list[rd.randint(0, len(self.name_list)-1)]
+        self.kitty_favorite = self.favorites[rd.randint(0, len(self.favorites)-1)]
         self.kitty_size = self.size_list[rd.randint(0, len(self.size_list)-1)]
         kitty_size_idx = self.size_list.index(self.kitty_size)
         if kitty_size_idx > self.size_list.index("fluffy") and self.kitty_size != "ENORMOUS":
@@ -123,49 +126,60 @@ class Kitty:
         print('A kitty has entered your cafe!')
         time.sleep(2) 
         print(kitty_images[kitty_size_idx])
-        input('''This {size} kitty's name is {name}, and
-it looks like {name} is {sat}
+        input('''This {size} kitty's name is {name}.
+              
+It's favorite food is {fave}.
+
+It looks like {name} is {sat}
 
 Better get cooking!'''.format(
-                size=self.kitty_size, name=self.kitty_name, sat=self.current_sat))
+                size=self.kitty_size, name=self.kitty_name, 
+                fave=self.kitty_favorite, sat=self.current_sat))
     
 class Cafe:
-    ingredients = ["milk", "roast", "flour", "mice", "catnip", "treats", 
-                "tuna", "birds"]
-#    menu = {"sass pancakes": "flour", 
-#            "mouse dinner": "mice", 
-#            "catnip tea": "catnip", 
-#            "treat spread": "treats",
-#            "tuna boat": "tuna",
-#            "birdie breakfast": "birds",
-#            "purrloin roast": "roast", 
-#            "warm milk": "milk"}
+    ingredients = ['milk','mice','tuna','quail']
+    def print_options(self,options):
+        for opt in options:
+            print(opt)
+            if opt == options[-2]:
+                print('or')
+            if opt == options[-1]:
+                choice= input('???')
+            return choice
+    def print_choice(self,choice,options,meals):
+        for i,pick in enumerate(options):
+            if choice == pick:
+                food = meals[i]
+        return food      
     def cook(self):
-        print("You have these ingredients:")
+        print("You have these ingredients to start with:")
         time.sleep(1)
         for ingredient in self.ingredients:
-            print("{}".format(ingredient))
+            print("*{}*".format(ingredient))
             time.sleep(1)
         choice1 = input("Which would you like to add?\n")
         time.sleep(1)
-        print("Great! Would you like to add something else?")
-        
+        print("Great! What else would you like to add...")
         if choice1 == 'milk':
             options = ['catnip', 'tuna', 'mice', 'nothing']
             meals = ['catnip tea', 'a tuna milkshake', 'a mouse float', 'warm milk']
-            choice2 = input("{}, {}, {} or {}?\n".format(
-                    options[0],options[1],options[2],options[3]))
-            for i,pick in enumerate(options):
-                if choice2 == pick:
-                    food = meals[i]
+            choice2 = print_options(options)
+            food = print_choice(choice2,options,meals)
         elif choice1 == 'mice':
             options = ['butter', 'flour','milk', 'nothing']
             meals = ['buttered mice', 'fried mice', 'a mouse float', 'mouse dinner']
-            choice2 = input("{}, {}, {}, or {}?\n".format(
-                    options[0],options[1],options[2],options[3]))
-            for i,pick in enumerate(options):
-                if choice2 == pick:
-                    food = meals[i]
+            choice2 = print_options(options)
+            food = print_choice(choice2,options,meals)
+        elif choice1 == 'tuna':
+            options = ['milk','flour','nothing']
+            meals = ['a tuna milkshake', 'tuna patties']
+            choice2 = print_options(options)
+            food = print_choice(choice2,options,meals)
+        if choice1 == 'quail':
+            options = ['butter','milk','flour','nothing']
+            meals = ['buttered quail', 'birdie breakfast', 'fried chiken', 'quail a la carte']
+            choice2 = print_options(options)
+            food = print_choice(choice2,options,meals)
         return food
     def update_satisfaction(self):
         pass
