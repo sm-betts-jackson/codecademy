@@ -100,7 +100,7 @@ def intro(kitty_images,kitty_cafe,instructions):
     print('Time to get started!!!\n')
     input('Press ENTER...\n')
 
-# In[]
+
 class Kitty:
     name_list = ["Leo", "Scampers", "Mittens", "Boots", "Charlie", "Buddy", 
                  "Moomoo", "Chichi", "Lola", "Honey", "Lilly", "Zoom", "Arnold",
@@ -115,16 +115,20 @@ class Kitty:
         "satisfied & purring =^..^="
         ]
     favorites = ['milk','mice','tuna','quail']
+    
     def __init__(self): #currently needs no inputs bc names & sizes are randomly generated
-    # The minimum food points needed to increase satisfaction are determined by its size. 
         pass
+    
     def __repr__(self):
         return("Generates a kitty & updates satisfaction levels.")
+        
     def generate_kitty(self):
+        # randomly generate the kitty's name, favorite food, and size
         self.kitty_name = self.name_list[rd.randint(0, len(self.name_list)-1)]
         self.kitty_favorite = self.favorites[rd.randint(0, len(self.favorites)-1)]
         self.kitty_size = self.size_list[rd.randint(0, len(self.size_list)-1)]
         kitty_size_idx = self.size_list.index(self.kitty_size)
+        # determine how hungry the kitty is based on size
         if kitty_size_idx > self.size_list.index("fluffy") and self.kitty_size != "ENORMOUS":
             current_sat_idx = 1 # the larger cats are hungrier
         elif kitty_size_idx <= self.size_list.index("fluffy") and self.kitty_size != "teeny tiny":
@@ -134,6 +138,7 @@ class Kitty:
         elif self.kitty_size == "teeny tiny":
             current_sat_idx = 3
         self.current_sat = self.sat_levels[current_sat_idx]
+        # introducing the kitty
         print(kitty_images[kitty_size_idx])
         time.sleep(1)
         if self.kitty_size == "ENORMOUS":
@@ -149,29 +154,37 @@ class Kitty:
         print("It looks like {name} is {sat}".format(
                 name=self.kitty_name,sat=self.current_sat))
         time.sleep(1)
-        input('Better get cooking...')
+        print('Better get cooking!')
+        time.sleep(1)
+        
     def feed_kitty(self,choice1,choice2,food):
+        # serving the kitty
         time.sleep(1)
         print('You served {food} to {name}.'.format(
                 food=food,name=self.kitty_name))
         time.sleep(1)
         print('...nom...nom...nom...')
         time.sleep(1)
+        # set empty return variables
         favorite = 0 # add 1 if favorite
         new_kitty = 0 # add 1 if feeding the next cat
         another_dish = 0 # add 1 if feeding a cat a second dish
+        # what will happen if an ingredient used in the food is the kitty's favorite
         if choice1 == self.kitty_favorite or choice2 == self.kitty_favorite:
             favorite += 1 # this was the cat's favorite food
             current_sat = self.sat_levels[-1]
             print("Excellent! {name} is {sat}".format(
                     name=self.kitty_name,sat=current_sat))
             time.sleep(1)
-            print('\nThanks for feeding {name}!\n'.format(name=self.kitty_name))
+            print('\nThanks for feeding {name}!'.format(name=self.kitty_name))
             time.sleep(1)
+            # asks if you'd like to feed another cat
             update = input("Will you feed the next cat?\n(Y/N)\n")
             if update == 'Y':
                 new_kitty +=1 # you will feed another kitty
+        # what will happen if the cat's favorite food is not in the meal
         if choice1 != self.kitty_favorite and choice2 != self.kitty_favorite:
+            # if the kitty is relatively small, it will remain less hungry then a large kitty
             if self.size_list.index(self.kitty_size) < self.size_list.index("fluffy"):
                 current_sat = self.sat_levels[2]
                 print("It looks like {name} is still {sat}".format(
@@ -181,6 +194,7 @@ class Kitty:
                 print("\nIt looks like {name} is still {sat}\n".format(
                         name=self.kitty_name, sat=current_sat))
             time.sleep(1)
+            # if the kitty is still hungry, prompt to feed another dish to the kitty
             update = input("Will you feed it more?\n(Y/N)\n")
             if update == 'Y':
                 another_dish += 1
@@ -191,8 +205,8 @@ def print_options(options):
         print('*{}'.format(opt))
         if opt == options[-2]:
             print('or')
-        if opt == options[-1]:
-            choice = input('???\n\n')
+    print('???')
+    choice = input('')
     return choice
 
 def print_choice(choice,options,meals):
@@ -213,13 +227,11 @@ def second_choice(choice1,options,meals):
 class Cafe:
     ingredients = ['milk','mice','tuna','quail']  
     def cook(self):
-        time.sleep(1)
-        print("\nYou have these ingredients to start with:")
-        time.sleep(1)
+        print("You have these ingredients to start with:\n")
         for ingredient in self.ingredients:
             print("*{}".format(ingredient))
             time.sleep(0.5)
-        choice1 = input("Which would you like to add?\n\n")
+        choice1 = input("Which would you like to add?\n")
         time.sleep(1)
         print("\nGreat! What else would you like to add?")
         if choice1 == 'milk':
@@ -241,75 +253,100 @@ class Cafe:
         else:
             print('You do not have that ingredient!')
             food = "nothing"
-        time.sleep(2)
+        time.sleep(1.5)
         print("\nYou've made {}!".format(food))
         return choice1, choice2, food
 
-# In[] 
+# In[]
 lives = 3
-intro(kitty_images,kitty_cafe,instructions)   
-begin = True
-while lives > 0:
-    if begin == True:
-        begin = False
-        cat = Kitty()
-        cat.generate_kitty()
-        cafe = Cafe()
-        choice1, choice2, food = cafe.cook()
-        favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
-    elif begin == False:
-        print('Favorite: ', favorite, '\nNew Kitty: ',
-              new_kitty, '\nAnother Dish: ', another_dish)
-        if food != "nothing":
-            print('You have {num} lives.'.format(num=lives))
-            if favorite == 1 and new_kitty == 1:
-                cat = Kitty()
-                cat.generate_kitty()
-                cafe = Cafe()
-                choice1, choice2, food = cafe.cook()
-                favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
-            elif favorite == 1 and new_kitty == 0:
-                print("Thank you for serving at\n")
-                print(kitty_cafe)
-            elif favorite == 0 and another_dish == 1:
-                choice1, choice2, food = cafe.cook()
-                favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
-            elif favorite == 0 and another_dish == 0 and new_kitty == 0:
-                lives += -1
-                if lives > 0:
-                    print('''
-You made {name} angry!!! 
-____________________________________________________
-                 '.   '.    .'   .'
-                   '.  '.  .'  .'
-          .__....._     '..'     _.....__,
-            .": o :':          ;': o :".
-            `. `-' .'.        .'. `-' .'
-              `---'             `---'
-
-    _...----...       ..   ..      ...----..._
- .-'__..-""'----     '. '"' .'     ----'""-..__`-.
-'.-'   _.--"""'        `._.'        '"""--._   `-.`
-'  .-"'                  :                  `"-.  `
-  '   `.               .'"'.               .'   `
-        `.           ."     ".            .'
-          `.       ."         ".        .'
-            `-._                   _.-'
-________________`"'--...___...--'"`________________
-                
-You are down to {num} lives!'''.format(
-name=cat.kitty_name,num=lives))
-                elif lives == 0:
-                    print(''' 
-                      You're
-\              _____                              /
- \  /\         |      _  ___  _              /\  /
-  \/  \    /\  |_  * |_) |   |  \  |  /\    /  \/
-       \  /  \ |   | |\  |=  |   ) | /  \  /
-        \/     |   | | \ |__ |_ /  *     \/
-           ''')
-    
-    
+#intro(kitty_images, kitty_cafe, instructions)
+cat = Kitty()
+cat.generate_kitty()
+#print(cat.kitty_favorite,cat.kitty_name, cat.kitty_size)
+cafe = Cafe()
+choice1, choice2, food = cafe.cook()
+#print(choice1,choice2,food)
+favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
+# In[]
+print(favorite,new_kitty,another_dish)
+# In[]
+cafe = Cafe()
+def serve_kitty():
+    cat = Kitty()
+    cat.generate_kitty()
+    choice1, choice2, food = cafe.cook()
+    favorite, new_kitty, another_dish = cat.feed_kitty(choice1, choice2, food)
+    return favorite, new_kitty, another_dish
+favorite, new_kitty, another_dish = serve_kitty()
+print(favorite, new_kitty, another_dish)
+# In[]
+# In[] 
+# =============================================================================
+# lives = 3
+# intro(kitty_images,kitty_cafe,instructions)   
+# begin = True
+# while lives > 0:
+#     if begin == True:
+#         begin = False
+#         cat = Kitty()
+#         cat.generate_kitty()
+#         cafe = Cafe()
+#         choice1, choice2, food = cafe.cook()
+#         favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
+#     elif begin == False:
+#         print('Favorite: ', favorite, '\nNew Kitty: ',
+#               new_kitty, '\nAnother Dish: ', another_dish)
+#         if food != "nothing":
+#             print('You have {num} lives.'.format(num=lives))
+#             if favorite == 1 and new_kitty == 1:
+#                 cat = Kitty()
+#                 cat.generate_kitty()
+#                 cafe = Cafe()
+#                 choice1, choice2, food = cafe.cook()
+#                 favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
+#             elif favorite == 1 and new_kitty == 0:
+#                 print("Thank you for serving at\n")
+#                 print(kitty_cafe)
+#             elif favorite == 0 and another_dish == 1:
+#                 choice1, choice2, food = cafe.cook()
+#                 favorite, new_kitty, another_dish = cat.feed_kitty(choice1,choice2,food)
+#             elif favorite == 0 and another_dish == 0 and new_kitty == 0:
+#                 lives += -1
+#                 if lives > 0:
+#                     print('''
+# You made {name} angry!!! 
+# ____________________________________________________
+#                  '.   '.    .'   .'
+#                    '.  '.  .'  .'
+#           .__....._     '..'     _.....__,
+#             .": o :':          ;': o :".
+#             `. `-' .'.        .'. `-' .'
+#               `---'             `---'
+# 
+#     _...----...       ..   ..      ...----..._
+#  .-'__..-""'----     '. '"' .'     ----'""-..__`-.
+# '.-'   _.--"""'        `._.'        '"""--._   `-.`
+# '  .-"'                  :                  `"-.  `
+#   '   `.               .'"'.               .'   `
+#         `.           ."     ".            .'
+#           `.       ."         ".        .'
+#             `-._                   _.-'
+# ________________`"'--...___...--'"`________________
+#                 
+# You are down to {num} lives!'''.format(
+# name=cat.kitty_name,num=lives))
+#                 elif lives == 0:
+#                     print(''' 
+#                       You're
+# \              _____                              /
+#  \  /\         |      _  ___  _              /\  /
+#   \/  \    /\  |_  * |_) |   |  \  |  /\    /  \/
+#        \  /  \ |   | |\  |=  |   ) | /  \  /
+#         \/     |   | | \ |__ |_ /  *     \/
+#            ''')
+#     
+#     
+# =============================================================================
 
 # In[]
 
