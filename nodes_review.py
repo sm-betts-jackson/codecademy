@@ -101,3 +101,28 @@ test_list = generate_test_linked_list()
 print(test_list.stringify_list())
 nth_last = nth_last_node(test_list, 4)
 print(nth_last.value)
+
+
+#example for finding middle node
+from LinkedList import LinkedList
+
+# Complete this function:
+def find_middle(linked_list):
+  linked_list_as_list = []
+  current_node = linked_list.head_node
+  while current_node:
+      linked_list_as_list.append(current_node)
+      current_node = current_node.next_node
+  return linked_list_as_list[int((len(linked_list_as_list))/2)]
+
+def generate_test_linked_list(length):
+  linked_list = LinkedList()
+  for i in range(length, 0, -1):
+    linked_list.insert_beginning(i)
+  return linked_list
+
+# Use this to test your code:
+test_list = generate_test_linked_list(7)
+print(test_list.stringify_list())
+middle_node = find_middle(test_list)
+print(middle_node.value)
